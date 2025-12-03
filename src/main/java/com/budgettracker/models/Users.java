@@ -1,37 +1,38 @@
 //containers to convert between data and java object
 package com.budgettracker.models;
 
-import java.sql.Timestamp;
+import java.math.BigDecimal;
 
 public class Users {
-    private int userId;
+    private int user_id;
     private String uname;
     private String fName;
     private String lName;
     private String email;
     private String pw;
-    private Timestamp createdAt;
-    private Timestamp updatedAt;
+    private BigDecimal balance;
 
     //constructor
-    public Users() {}
-    public Users(int userId, String uname, String fName, String lName, String email, String pw, Timestamp createAt, Timestamp updatedAt) {
-        this.userId = userId;
+    public Users() {
+        this.balance = BigDecimal.ZERO;
+    }
+    
+    public Users(int user_id, String uname, String fName, String lName, String email, String pw, BigDecimal balance) {
+        this.user_id = user_id;
         this.uname = uname;
         this.fName = fName;
         this.lName = lName;
         this.email = email;
         this.pw = pw;
-        this.createdAt = createAt;
-        this.updatedAt = updatedAt;
+        this.balance = balance;
     }
 
     //getters and setters
     public int getUserId() {
-        return userId;
+        return user_id;
     }
     public void setUserId(int userId) {
-        this.userId = userId;
+        this.user_id = userId;
     }
     public String getUname() {
         return uname;
@@ -57,18 +58,16 @@ public class Users {
     public void setEmail(String email) {
         this.email = email;
     }
-
-    public Timestamp getCreatedAt() {
-        return createdAt;
-    }
-    public Timestamp getUpdatedAt() {
-        return updatedAt;
-    }
-
     public String getPw() {
         return pw;
     }
     public void setPw(String pw) {
         this.pw = pw;
+    }
+    public BigDecimal getBalance() {
+        return balance;
+    }
+    public void setBalance(BigDecimal balance) {
+        this.balance = balance;
     }
 }
