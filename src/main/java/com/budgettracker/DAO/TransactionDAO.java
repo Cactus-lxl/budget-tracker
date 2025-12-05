@@ -10,10 +10,16 @@ import java.util.List;
 public class TransactionDAO {
     //create new transaction
     public void createNewTransaction(Transaction transaction) throws SQLException {
+        try(Connection connection = DatabaseConfig.getConnection();){
+            createNewTransaction(transaction, connection);
+        }
+    }
+
+    //create new transaction with acid(rollback, same connection)
+    public void createNewTransaction(Transaction transaction, Connection connection) throws SQLException {
         String sql = "INSERT INTO transaction (description, amount, time, type, uid, cid) VALUES (?, ?, ?, ?, ?, ?)";
 
-        try(Connection connection = DatabaseConfig.getConnection();
-            PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+        try(PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
             statement.setString(1, transaction.getDescription());
             statement.setBigDecimal(2, transaction.getAmount());
@@ -87,7 +93,7 @@ public class TransactionDAO {
     }
 
     //filter transaction of user by type
-    public List<Transaction> getAllTransactionsOfUser(String type, int uid) throws SQLException {
+    public List<Transaction> getAllTransactionsOfUserByType(String type, int uid) throws SQLException {
         String sql = "SELECT * FROM transaction WHERE type = ? AND uid = ?";
         List<Transaction> transactions = new ArrayList<>();
 
@@ -144,12 +150,41 @@ public class TransactionDAO {
         }
     }
 
-    //update transaction
-    public int updateTransaction(Transaction transaction) throws SQLException{
-        String sql = "UPDATE transaction SET description = ?, amount = ?, time = ?, type = ?, uid = ?, cid= ? WHERE tid = ?";
+    public List<Transaction> getAllTransactionsOfUserAtParticularTime(int uid, int cid, int month, int year) throws SQLException {
+        String sql = "SELECT * FROM transaction Where cid = ? AND uid = ? AND EXTRACT(MONTH FROM time) = ? AND EXTRACT(YEAR FROM time) = ?";
+        List<Transaction> transactions = new ArrayList<>();
 
         try(Connection connection = DatabaseConfig.getConnection();
-            PreparedStatement statement = connection.prepareStatement(sql)) {
+        PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, cid);
+            statement.setInt(2, uid);
+            statement.setInt(3, month);
+            statement.setInt(4, year);
+            ResultSet resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+                Transaction transaction = new Transaction();
+
+                transaction.setTid(resultSet.getInt("tid"));
+                transaction.setDescription(resultSet.getString("description"));
+                transaction.setAmount(resultSet.getBigDecimal("amount"));
+                transaction.setTime(resultSet.getTimestamp("time"));
+                transaction.setType(resultSet.getString("type"));
+                transaction.setUid(resultSet.getInt("uid"));
+                transaction.setCid(resultSet.getInt("cid"));
+
+                transactions.add(transaction);
+            }
+            return transactions;
+        }
+    }
+
+
+    //update transaction with rollback(using same connection)
+    public int updateTransaction(Transaction transaction, Connection connection) throws SQLException{
+        String sql = "UPDATE transaction SET description = ?, amount = ?, time = ?, type = ?, uid = ?, cid= ? WHERE tid = ?";
+
+        try(PreparedStatement statement = connection.prepareStatement(sql)) {
 
             statement.setString(1, transaction.getDescription());
             statement.setBigDecimal(2, transaction.getAmount());
@@ -163,14 +198,12 @@ public class TransactionDAO {
         }
     }
 
-    //delete transaction
-    public void deleteTransaction(int tid) throws SQLException{
+    //delete transaction with rollback
+    public void deleteTransaction(int tid, Connection connection) throws SQLException{
         String sql = "DELETE FROM transaction WHERE tid = ?";
 
-        try(Connection connection = DatabaseConfig.getConnection();
-        PreparedStatement statement = connection.prepareStatement(sql)) {
+        try(PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, tid);
-
             statement.executeUpdate();
         }
     }

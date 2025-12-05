@@ -14,10 +14,11 @@ public class RecurringTransaction {
     private String description;
     private int uid;
     private int cid;
+    private java.sql.Date last_processed_date;
 
     public RecurringTransaction() {}
 
-    public RecurringTransaction(int rid, BigDecimal amount, java.sql.Date s_date, java.sql.Date e_date, boolean is_active, String frequency, String type, String description,  int uid, int cid) {
+    public RecurringTransaction(int rid, BigDecimal amount, java.sql.Date s_date, java.sql.Date e_date, boolean is_active, String frequency, String type, String description,  int uid, int cid, Date last_processed_date) {
         this.rid = rid;
         this.amount = amount;
         this.s_date = s_date;
@@ -28,6 +29,7 @@ public class RecurringTransaction {
         this.description = description;
         this.uid = uid;
         this.cid = cid;
+        this.last_processed_date = last_processed_date;
     }
 
     public int getRid() {
@@ -89,5 +91,11 @@ public class RecurringTransaction {
     }
     public void setCid(int cid) {
         this.cid = cid;
+    }
+    public java.sql.Date getLast_processed_date() {
+        return last_processed_date;
+    }
+    public void setLast_processed_date(java.sql.Date last_processed_date) {
+        this.last_processed_date = last_processed_date;
     }
 }

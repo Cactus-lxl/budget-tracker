@@ -57,6 +57,7 @@ public class RecurringTransactionDAO {
                 recurringTransaction.setDescription(resultSet.getString("description"));
                 recurringTransaction.setUid(resultSet.getInt("uid"));
                 recurringTransaction.setCid(resultSet.getInt("cid"));
+                recurringTransaction.setLast_processed_date(resultSet.getDate("last_processed_date"));
 
                 return recurringTransaction;
             }
@@ -89,6 +90,7 @@ public class RecurringTransactionDAO {
                 recurringTransaction.setDescription(resultSet.getString("description"));
                 recurringTransaction.setUid(resultSet.getInt("uid"));
                 recurringTransaction.setCid(resultSet.getInt("cid"));
+                recurringTransaction.setLast_processed_date(resultSet.getDate("last_processed_date"));
 
                 recurringTransactions.add(recurringTransaction);
             }
@@ -119,6 +121,7 @@ public class RecurringTransactionDAO {
                 recurringTransaction.setDescription(resultSet.getString("description"));
                 recurringTransaction.setUid(resultSet.getInt("uid"));
                 recurringTransaction.setCid(resultSet.getInt("cid"));
+                recurringTransaction.setLast_processed_date(resultSet.getDate("last_processed_date"));
 
                 recurringTransactions.add(recurringTransaction);
             }
@@ -128,11 +131,10 @@ public class RecurringTransactionDAO {
     }
 
     //update recurring transactions
-    public int updateRecurringTransaction(RecurringTransaction recurringTransaction) throws SQLException {
+    public int updateRecurringTransaction(RecurringTransaction recurringTransaction, Connection connection) throws SQLException {
         String sql = "UPDATE recurring_transaction SET amount = ?, s_date = ?, e_date = ?, is_active = ?, frequency = ?, type = ?, description = ?, uid = ?, cid = ? WHERE rid = ?";
 
-        try(Connection connection = DatabaseConfig.getConnection();
-        PreparedStatement statement = connection.prepareStatement(sql)){
+        try(PreparedStatement statement = connection.prepareStatement(sql)){
             statement.setBigDecimal(1, recurringTransaction.getAmount());
             statement.setDate(2, recurringTransaction.getS_date());
             statement.setDate(3, recurringTransaction.getE_date());
@@ -145,6 +147,12 @@ public class RecurringTransactionDAO {
             statement.setInt(10, recurringTransaction.getRid());
 
             return  statement.executeUpdate();
+        }
+    }
+
+    public int updateRecurringTransaction(RecurringTransaction recurringTransaction) throws SQLException {
+        try(Connection connection = DatabaseConfig.getConnection();){
+            return updateRecurringTransaction(recurringTransaction, connection);
         }
     }
 
@@ -162,14 +170,32 @@ public class RecurringTransactionDAO {
     }
 
     //delete recurring transaction
-    public boolean deleteRecurringTransaction(int rid) throws SQLException {
+    public boolean deleteRecurringTransaction(int rid, Connection connection) throws SQLException {
         String sql = "DELETE FROM recurring_transaction WHERE rid = ?";
 
-        try(Connection connection = DatabaseConfig.getConnection();
-        PreparedStatement statement = connection.prepareStatement(sql)){
+        try(PreparedStatement statement = connection.prepareStatement(sql)){
 
             statement.setInt(1, rid);
             return  statement.executeUpdate() > 0;
         }
     }
+
+    public boolean deleteRecurringTransaction(int rid) throws SQLException {
+        try(Connection connection = DatabaseConfig.getConnection();){
+            return deleteRecurringTransaction(rid, connection);
+        }
+    }
+
+    //update processed date
+    public void updateProcessedDate(int rid, Date processedDate, Connection connection) throws SQLException {
+        String sql = "UPDATE recurring_transaction SET last_processed_date = ? WHERE rid = ?";
+
+        try(PreparedStatement statement = connection.prepareStatement(sql)){
+            statement.setDate(1, processedDate);
+            statement.setInt(2, rid);
+
+            statement.executeUpdate();
+        }
+    }
+
 }

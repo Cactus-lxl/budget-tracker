@@ -5,21 +5,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6113484e-6373-4541-aa05-e1cccb4d905d" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/budgettracker/DAO/BudgetDAO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/budgettracker/DAO/CategoryDAO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/budgettracker/DAO/GoalDAO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/budgettracker/DAO/NotificationDAO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/budgettracker/DAO/RecurringTransactionDAO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/budgettracker/DAO/TransactionDAO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/budgettracker/models/Budget.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/budgettracker/models/Category.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/budgettracker/models/Goal.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/budgettracker/models/Notification.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/budgettracker/models/RecurringTransaction.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/budgettracker/models/Transaction.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/budgettracker/services/BudgetService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/budgettracker/services/RecurringTransactionService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/budgettracker/services/TransactionService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/budgettracker/services/UserService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/budgettracker/DAO/RecurringTransactionDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/budgettracker/DAO/RecurringTransactionDAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/budgettracker/DAO/TransactionDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/budgettracker/DAO/TransactionDAO.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/budgettracker/DAO/UserDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/budgettracker/DAO/UserDAO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/budgettracker/models/Users.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/budgettracker/models/Users.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/budgettracker/models/RecurringTransaction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/budgettracker/models/RecurringTransaction.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -88,7 +82,8 @@
       <updated>1764359116170</updated>
       <workItem from="1764359117197" duration="3988000" />
       <workItem from="1764552719437" duration="21817000" />
-      <workItem from="1764694717587" duration="22119000" />
+      <workItem from="1764694717587" duration="46456000" />
+      <workItem from="1764870234981" duration="16407000" />
     </task>
     <servers />
   </component>
@@ -102,11 +97,6 @@
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/budgettracker/DAO/TransactionDAO.java</url>
-          <line>148</line>
-          <option name="timeStamp" value="6" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/budgettracker/DAO/RecurringTransactionDAO.java</url>
           <line>12</line>
           <option name="timeStamp" value="13" />
@@ -115,6 +105,60 @@
           <url>file://$PROJECT_DIR$/src/main/java/com/budgettracker/DAO/CategoryDAO.java</url>
           <line>32</line>
           <option name="timeStamp" value="14" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/budgettracker/DAO/UserDAO.java</url>
+          <line>133</line>
+          <option name="timeStamp" value="23" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/budgettracker/DAO/RecurringTransactionDAO.java</url>
+          <line>103</line>
+          <option name="timeStamp" value="25" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/budgettracker/services/RecurringTransactionService.java</url>
+          <line>119</line>
+          <option name="timeStamp" value="26" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/budgettracker/DAO/RecurringTransactionDAO.java</url>
+          <line>160</line>
+          <option name="timeStamp" value="28" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/budgettracker/services/TransactionService.java</url>
+          <line>121</line>
+          <option name="timeStamp" value="32" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/budgettracker/DAO/RecurringTransactionDAO.java</url>
+          <line>183</line>
+          <option name="timeStamp" value="35" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/budgettracker/services/TransactionService.java</url>
+          <line>90</line>
+          <option name="timeStamp" value="39" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/budgettracker/services/BudgetService.java</url>
+          <line>31</line>
+          <option name="timeStamp" value="42" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/budgettracker/services/BudgetService.java</url>
+          <line>86</line>
+          <option name="timeStamp" value="43" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-method">
+          <url>file://$PROJECT_DIR$/src/main/java/com/budgettracker/services/TransactionService.java</url>
+          <line>89</line>
+          <properties class="com.budgettracker.services.TransactionService" method="getTransactionsByUser">
+            <option name="EMULATED" value="true" />
+            <option name="WATCH_EXIT" value="false" />
+          </properties>
+          <option name="timeStamp" value="41" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
