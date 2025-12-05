@@ -2,6 +2,8 @@ package com.budgettracker.DAO;
 
 import com.budgettracker.models.Goal;
 import com.budgettracker.config.DatabaseConfig;
+
+import java.math.BigDecimal;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -52,17 +54,16 @@ public class GoalDAO {
         return null;
     }
 
-    //get all goals of user
-    public List<Goal> getALLGoals(int uid) throws SQLException {
+    //get goal of user
+    public Goal getGoalByUser(int uid) throws SQLException {
         String sql = "SELECT * FROM goal WHERE uid = ?";
-        List<Goal> goals = new ArrayList<>();
 
         try(Connection connection = DatabaseConfig.getConnection();
         PreparedStatement pstmt = connection.prepareStatement(sql)) {
             pstmt.setInt(1, uid);
             ResultSet rs = pstmt.executeQuery();
 
-            while (rs.next()) {
+            if (rs.next()) {
                 Goal goal = new Goal();
 
                 goal.setGid(rs.getInt("gid"));
@@ -70,20 +71,25 @@ public class GoalDAO {
                 goal.setCurrent(rs.getBigDecimal("current"));
                 goal.setCreate_date(rs.getDate("create_date"));
                 goal.setEnd_date(rs.getDate("end_date"));
-                goal.setUid(rs.getInt("uid"));
 
-                goals.add(goal);
+                goal.setUid(rs.getInt("uid"));
+                return goal;
             }
-            return goals;
+            return null;
         }
     }
 
     //update goal
     public int updateGoal(Goal goal) throws SQLException {
+        try(Connection connection = DatabaseConfig.getConnection();){
+            return updateGoal(goal, connection);
+        }
+    }
+
+    public int updateGoal(Goal goal, Connection connection) throws SQLException {
         String sql = "UPDATE goal SET target = ?, current = ?, create_date = ?, end_date = ?, uid = ? WHERE gid = ?";
 
-        try(Connection connection = DatabaseConfig.getConnection();
-        PreparedStatement pstmt = connection.prepareStatement(sql)) {
+        try(PreparedStatement pstmt = connection.prepareStatement(sql)) {
             pstmt.setBigDecimal(1, goal.getTarget());
             pstmt.setBigDecimal(2, goal.getCurrent());
             pstmt.setDate(3, goal.getCreate_date());
@@ -92,6 +98,18 @@ public class GoalDAO {
             pstmt.setInt(6, goal.getGid());
 
             return pstmt.executeUpdate();
+        }
+    }
+
+    //update current
+    public void updateCurrent(int gid, BigDecimal amount, Connection conn) throws SQLException {
+        String sql = "UPDATE goal SET current = current + ? WHERE gid = ?";
+
+        try(PreparedStatement statement = conn.prepareStatement(sql)) {
+            statement.setBigDecimal(1, amount);
+            statement.setInt(2, gid);
+
+            statement.executeUpdate();
         }
     }
 

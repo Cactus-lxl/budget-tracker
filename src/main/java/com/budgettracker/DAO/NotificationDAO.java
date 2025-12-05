@@ -79,7 +79,7 @@ public class NotificationDAO {
     }
 
     //get all unread notification of user
-    public List<Notification> findAllNotifications(int uid) throws SQLException {
+    public List<Notification> findUnreadNotifications(int uid) throws SQLException {
         String sql = "SELECT * FROM notification WHERE uid = ? AND is_read = FALSE";
         List<Notification> notifications = new ArrayList<>();
 

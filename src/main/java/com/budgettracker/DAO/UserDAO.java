@@ -154,10 +154,11 @@ public class UserDAO {
     }
 
     // Get current balance
-    public BigDecimal getBalance(int uid, Connection connection) throws SQLException {
+    public BigDecimal getBalance(int uid) throws SQLException {
         String sql = "SELECT balance FROM users WHERE uid = ?";
         
-        try(PreparedStatement statement = connection.prepareStatement(sql)) {
+        try(Connection connection = DatabaseConfig.getConnection();
+            PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, uid);
             ResultSet rs = statement.executeQuery();
             

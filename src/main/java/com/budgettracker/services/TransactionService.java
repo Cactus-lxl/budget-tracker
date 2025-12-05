@@ -1,9 +1,13 @@
 package com.budgettracker.services;
 
 import com.budgettracker.DAO.CategoryDAO;
+import com.budgettracker.DAO.NotificationDAO;
 import com.budgettracker.DAO.UserDAO;
 import com.budgettracker.config.DatabaseConfig;
+import com.budgettracker.models.Budget;
+import com.budgettracker.models.Notification;
 import com.budgettracker.models.Transaction;
+import com.budgettracker.services.BudgetService;
 
 import com.budgettracker.DAO.TransactionDAO;
 
@@ -11,15 +15,19 @@ import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Locale;
 
 public class TransactionService {
     private TransactionDAO transactionDAO;
     private UserDAO userDAO;
+    private BudgetService budgetService;
 
     public TransactionService(){
         this.transactionDAO = new TransactionDAO();
         this.userDAO = new UserDAO();
+        this.budgetService = new BudgetService();
     }
 
     //create new transaction
@@ -42,7 +50,9 @@ public class TransactionService {
             throw new SQLException("You have to have a category for your transaction ");
         }
 
-        transaction.setTime(new Timestamp(System.currentTimeMillis()));
+        java.sql.Timestamp time = new Timestamp(System.currentTimeMillis());
+
+        transaction.setTime(time);
 
         Connection conn = null;
         try{
@@ -74,6 +84,25 @@ public class TransactionService {
             }
         }
 
+        LocalDate transactionTime = transaction.getTime().toLocalDateTime().toLocalDate();
+        int month = transactionTime.getMonthValue();
+        int year = transactionTime.getYear();
+
+        Budget budget = budgetService.getBudgetSpecified(uid, cid, month, year);
+
+        if(budget != null){
+            if(budgetService.exceedsBudget(uid, cid, month, year)){
+                Notification notification = new Notification();
+                notification.setUid(uid);
+                notification.setBid(budget.getBid());
+                notification.setMessage("Budget exceed");
+                notification.setIs_read(false);
+                notification.setCreateDate(new Timestamp(System.currentTimeMillis()));
+
+                NotificationService notificationService = new NotificationService();
+                notificationService.createNotification(notification);
+            }
+        }
     }
 
     //find a transaction
@@ -172,6 +201,28 @@ public class TransactionService {
             if (conn != null) {
                 conn.setAutoCommit(true);
                 conn.close();
+            }
+        }
+
+        int cid = transaction.getCid();
+
+        //convert timestamp to local date
+        LocalDate transactionTime = transaction.getTime().toLocalDateTime().toLocalDate();
+        int month = transactionTime.getMonthValue();
+        int year = transactionTime.getYear();
+
+        Budget budget = budgetService.getBudgetSpecified(uid, cid, month, year);
+        if(budget != null){
+            if(budgetService.exceedsBudget(uid, cid, month, year)){
+                Notification notification = new Notification();
+                notification.setUid(uid);
+                notification.setBid(budget.getBid());
+                notification.setMessage("Budget exceed");
+                notification.setIs_read(false);
+                notification.setCreateDate(new Timestamp(System.currentTimeMillis()));
+
+                NotificationService notificationService = new NotificationService();
+                notificationService.createNotification(notification);
             }
         }
     }
