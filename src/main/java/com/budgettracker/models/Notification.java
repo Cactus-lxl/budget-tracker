@@ -8,11 +8,11 @@ public class Notification {
     private boolean is_read;
     private Timestamp createDate;
     private int uid;
-    private int bid;
+    private Integer bid;
 
     public Notification() {}
 
-    public Notification(int nid, String message, boolean is_read, Timestamp createDate, int uid, int bid) {
+    public Notification(int nid, String message, boolean is_read, Timestamp createDate, int uid, Integer bid) {
         this.nid = nid;
         this.message = message;
         this.is_read = is_read;
@@ -51,10 +51,10 @@ public class Notification {
     public void setUid(int uid) {
         this.uid = uid;
     }
-    public int getBid() {
+    public Integer getBid() {
         return bid;
     }
-    public void setBid(int bid) {
+    public void setBid(Integer bid) {
         this.bid = bid;
     }
 }

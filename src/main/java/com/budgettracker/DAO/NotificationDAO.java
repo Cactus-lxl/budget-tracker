@@ -17,7 +17,13 @@ public class NotificationDAO {
             statement.setBoolean(2, notification.isRead());
             statement.setTimestamp(3, notification.getCreateDate());
             statement.setInt(4, notification.getUid());
-            statement.setInt(5, notification.getBid());
+
+            if(notification.getBid()  == null){
+                statement.setNull(5, java.sql.Types.INTEGER);
+            }
+            else{
+                statement.setInt(5, notification.getBid());
+            }
 
             statement.executeUpdate();
             ResultSet resultSet = statement.getGeneratedKeys();

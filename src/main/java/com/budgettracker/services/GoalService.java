@@ -13,6 +13,8 @@ import java.sql.Date;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 
+import static java.sql.Types.NULL;
+
 public class GoalService {
     private GoalDAO goalDAO;
     private UserDAO userDAO;
@@ -121,7 +123,7 @@ public class GoalService {
 
             Notification notification = new Notification();
             notification.setUid(uid);
-            notification.setBid(0);
+            notification.setBid(null);
             notification.setMessage("Goal reached!!! :)");
             notification.setIs_read(false);
             notification.setCreateDate(new Timestamp(System.currentTimeMillis()));
